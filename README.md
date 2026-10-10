@@ -1,8 +1,12 @@
-# Gemini Computer Use - Visual Playground
+# 👁️ Gemini Computer Use - Visual Playground & Operator
 
-A state-of-the-art developer playground, visualizer, and diagnostics console for Google's **Gemini 3.5 Flash Computer Use API** (version `google-genai>=2.7.0`). 
+[![Gemini API](https://img.shields.io/badge/Gemini_API-Multimodal_Computer_Use-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
+[![Playwright](https://img.shields.io/badge/Playwright-Chromium_Engine-45ba4b?logo=playwright&logoColor=white)](https://playwright.dev/)
+[![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)](https://python.org)
+[![Express](https://img.shields.io/badge/Express-Glassmorphic_Dashboard-black?logo=express&logoColor=white)](https://expressjs.com)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-This project integrates Python's look-think-act browser automation loop (driven by Playwright and the `google-genai` SDK) with a real-time, glassmorphic Express dashboard.
+A state-of-the-art developer playground, visualizer, and diagnostics console for Google's **Gemini Multimodal Computer Use API** (version `google-genai>=2.7.0`). Built and maintained by **Omniverso Digital**.
 
 ---
 
