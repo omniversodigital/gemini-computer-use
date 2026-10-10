@@ -1,0 +1,11 @@
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.env.local
+history.json
+.pytest_cache/
+.DS_Store
+*.log

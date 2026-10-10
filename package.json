@@ -1,0 +1,16 @@
+{
+  "name": "gemini-computer-use",
+  "version": "1.0.0",
+  "description": "Developer playground and visualizer for Gemini Computer Use API",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": ".venv\\Scripts\\python.exe -m pytest tests/"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}

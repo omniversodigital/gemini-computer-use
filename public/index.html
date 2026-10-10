@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Computer Use | Visual Playground</title>
+  <meta name="description" content="State-of-the-art visual explorer and developer console for Google Gemini 3.5 Flash Computer Use API.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="glow-bg"></div>
+
+  <div class="dashboard-wrapper">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="logo-group">
+        <div class="logo-glowing-ring">
+          <span class="logo-symbol">✦</span>
+        </div>
+        <div class="logo-meta">
+          <h1>GEMINI COMPUTER USE</h1>
+          <p>Agent Playground &amp; Visualizer Console</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <div class="health-badge" id="badge-node">
+          <span class="badge-indicator pulse-cyan"></span>
+          <span>Node: Checking…</span>
+        </div>
+        <div class="health-badge" id="badge-playwright">
+          <span class="badge-indicator"></span>
+          <span>Playwright: Checking…</span>
+        </div>
+        <div class="health-badge" id="badge-key">
+          <span class="badge-indicator"></span>
+          <span>API Key: Checking…</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Grid -->
+    <main class="grid-container">
+      
+      <!-- Column 1: Control Center -->
+      <section class="panel-column control-panel">
+        <div class="glass-box">
+          <div class="box-header">
+            <span class="header-icon">⚙️</span>
+            <h2>Control Center</h2>
+          </div>
+          
+          <form id="agent-form">
+            <div class="input-group">
+              <label for="api-key">Gemini API Key</label>
+              <div class="key-input-wrapper">
+                <input type="password" id="api-key" placeholder="Enter your gemini-3.5 API key..." autocomplete="current-password">
+                <button type="button" id="toggle-key-visibility" class="icon-btn" title="Toggle visibility">👁️</button>
+              </div>
+              <span class="input-hint">Leave blank to use Simulation/Playground Mode. Stored locally in your browser.</span>
+            </div>
+
+            <div class="input-group">
+              <label for="start-url">Starting Web Address</label>
+              <input type="url" id="start-url" value="https://www.google.com" required>
+            </div>
+
+            <div class="input-group">
+              <label for="task-input">Agent Instructions</label>
+              <textarea id="task-input" rows="4" placeholder="Describe the task you want Gemini to accomplish in the browser... (e.g. Search for Wikipedia's article on artificial intelligence, click the history section and find details.)" required></textarea>
+            </div>
+
+            <!-- Mode Selector Switch -->
+            <div class="input-group toggle-wrapper">
+              <span class="toggle-label">Playground Mode (Simulation)</span>
+              <label class="switch">
+                <input type="checkbox" id="sim-mode" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <p class="toggle-desc">Runs pre-configured automation scenarios using a headless browser. No API key needed.</p>
+
+            <button type="submit" class="action-btn" id="run-btn">
+              <span class="btn-text">DEPLOY AGENT CYCLE</span>
+              <span class="btn-spinner hidden"></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Run Statistics -->
+        <div class="glass-box stats-box hidden" id="live-stats">
+          <div class="box-header">
+            <span class="header-icon">📊</span>
+            <h2>Run Statistics</h2>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-val" id="stat-steps">0</span>
+              <span class="stat-lbl">Steps Taken</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val" id="stat-time">0s</span>
+              <span class="stat-lbl">Elapsed Time</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val" id="stat-status">Idle</span>
+              <span class="stat-lbl">Status</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Column 2: Visualizer Screen -->
+      <section class="panel-column visualizer-column">
+        <!-- Viewport Box -->
+        <div class="glass-box viewport-box">
+          <div class="viewport-header">
+            <div class="window-decorations">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="address-bar" id="viewport-url">https://www.google.com</div>
+            <button class="abort-btn hidden" id="abort-btn">ABORT AGENT</button>
+          </div>
+
+          <div class="viewport-canvas-container" id="canvas-container">
+            <!-- Simulated Cursor -->
+            <div id="mouse-cursor" class="mouse-pointer hidden">
+              <svg class="cursor-svg" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M4 3l15 11-6.5.7 4.5 7.3-3.2 2-4.5-7.5-3.3 6V3z" fill="white" stroke="black" stroke-width="2"/>
+              </svg>
+              <div class="click-pulse"></div>
+            </div>
+            
+            <!-- Inspector Target Marker -->
+            <div id="inspector-target-dot" class="target-marker hidden"></div>
+            
+            <!-- Viewport Image -->
+            <img id="viewport-image" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='768' viewBox='0 0 1024 768'><rect width='100%' height='100%' fill='%23181824'/><text x='50%' y='50%' font-family='sans-serif' font-size='24' fill='%234d4d75' text-anchor='middle'>Deploy the agent to render live browser screenshots</text></svg>" alt="Browser Viewport Screen">
+          </div>
+
+          <div class="viewport-inspector">
+            <span class="inspector-coordinate" id="inspect-coords-hover">Hover: (--, --)</span>
+            <span class="inspector-separator">|</span>
+            <span class="inspector-coordinate" id="inspect-coords-click">Click: (--, --)</span>
+            <div class="inspector-copy-group">
+              <input type="text" id="inspect-copy-val" readonly placeholder="[x, y]">
+              <button type="button" class="copy-coord-btn" id="inspect-copy-btn">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline & Steps -->
+        <div class="glass-box timeline-box">
+          <div class="box-header timeline-header">
+            <span class="header-icon">🧭</span>
+            <h2>Action History Timeline</h2>
+            <div class="playback-controls">
+              <button type="button" class="playback-btn" id="play-prev-btn" title="Previous Step">⏮️</button>
+              <button type="button" class="playback-btn" id="play-toggle-btn" title="Play Slideshow">⏯️</button>
+              <button type="button" class="playback-btn" id="play-next-btn" title="Next Step">⏭️</button>
+              <select id="playback-speed" class="speed-select">
+                <option value="2000">1x (2s)</option>
+                <option value="1000">2x (1s)</option>
+                <option value="4000">0.5x (4s)</option>
+              </select>
+            </div>
+          </div>
+          <div class="timeline-steps" id="timeline-list">
+            <div class="empty-timeline">No agent steps recorded yet. Start a run above.</div>
+          </div>
+        </div>
+
+        <!-- Compiled Agent Report -->
+        <div class="glass-box report-box hidden" id="report-box">
+          <div class="box-header">
+            <span class="header-icon">📝</span>
+            <h2>Final Research Report</h2>
+          </div>
+          <div class="report-content" id="report-content"></div>
+        </div>
+      </section>
+
+      <!-- Column 3: Terminal Feed & History -->
+      <section class="panel-column terminal-column">
+        <!-- Live Console Logs -->
+        <div class="glass-box console-box">
+          <div class="box-header">
+            <span class="header-icon">💻</span>
+            <h2>System Logs Console</h2>
+            <button class="clear-btn" id="clear-console-btn">Clear</button>
+          </div>
+          <div class="console-output" id="console-output">
+            <span class="sys-msg">[System] Ready to spawn agent session...</span>
+          </div>
+        </div>
+
+        <!-- Session History -->
+        <div class="glass-box history-box">
+          <div class="box-header">
+            <span class="header-icon">📂</span>
+            <h2>Execution History Log</h2>
+            <button class="clear-btn danger" id="clear-history-btn">Clear All</button>
+          </div>
+          <div class="history-list" id="history-list">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p>Gemini Computer Use Sandbox v1.0 • Designed for Advanced Visual Diagnostics • Powered by Playwright &amp; Google GenAI</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

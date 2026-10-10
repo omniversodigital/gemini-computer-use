@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  playground:
+    build: .
+    container_name: gemini-computer-use-playground
+    ports:
+      - "3010:3010"
+    environment:
+      - PORT=3010
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - ./public/runs:/app/public/runs
+      - ./history.json:/app/history.json
+    restart: unless-stopped
